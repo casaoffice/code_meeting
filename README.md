@@ -1,4 +1,4 @@
-# scala-spark-HelloWorld
+# scala-spark-analytics
 How to compile and run a 'Spark Analytics with Movie Data' 
 
 On Iceberg *only* activate a recent version of the git version control software:
