@@ -1,0 +1,3 @@
+sbt package
+spark-submit --class SparkAnalytics --deploy-mode client /home/ojuarezwork412/sbt_projects/spark-analytics/target/scala-2.11/spark-analytics_2.11-1.0.jar
+

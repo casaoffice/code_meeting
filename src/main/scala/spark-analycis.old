@@ -1,0 +1,146 @@
+
+
+//import spark.implicits._
+import org.apache.spark.sql.functions.split
+import org.apache.spark.sql.functions.{from_unixtime,unix_timestamp,_}
+
+import org.apache.spark.sql.{SparkSession,types}
+//import org.apache.spark.sql.functions._
+// define main method (scala entry point)
+object SparkAnalytics {
+  def main(args: Array[String]): Unit = {
+
+    // initialise spark session (running in "local" mode)
+    val ratings_columns = Seq("user_id","item_id","rating","timestamp")
+    val movies_columns = Seq( "movie_id",
+                               "movie_title", 
+                               "release_date", 
+                               "video_release_date", 
+                               "IMDb_URL",
+                                "unknown",
+                                "Action",
+                                "Adventure", 
+                                "Animation",
+                                "Children\'s",
+                                 "Comedy",
+                                "Crime",
+                                "Documentary",
+                                "Drama", 
+                                 "Fantasy",
+                                "Film-Noir",
+                                "Horror",
+                                 "Musical",
+                                "Mystery",
+                                "Romance",
+                                "Sci-Fi",
+                                "Thriller", 
+                                "War", 
+                                "Western" 
+        )
+    val user_columns = Seq ( "user_id","age" ,"gender","occupation", "zip_code")
+    val occupations_columns = Seq ("ocupation_name")
+    val genres_columns = Seq("genre_name")
+    val genres_names = Seq ("unknown","Action","Adventure","Animation","Children's","Comedy",
+                                  "Crime",
+                                  "Documentary",
+                                  "Drama",
+                                  "Fantasy",
+                                  "Film-Noir",
+                                  "Horror",
+                                  "Musical",
+                                  "Mystery",
+                                  "Romance",
+                                  "Sci-Fi",
+                                  "Thriller",
+                                 "War", 
+                                 "Western"
+   )
+   val sparkSession = SparkSession.builder
+      .master("local")
+      .appName("Spark Analytics")
+      .getOrCreate()
+
+
+    val ratings = sparkSession.read.format("csv").option("header","false")
+      .option("sep","\t")
+      .option("escape","\t")
+      .csv("file:////home/ojuarezwork412/MovieLens/u.data")
+      .toDF(ratings_columns: _*)
+       ratings.printSchema()
+       ratings.show(false)
+    val movies = sparkSession.read.format("csv").option("header", "false")
+      .option("sep", "|")
+      .option("escape", "\t")
+      .csv("file:////home/ojuarezwork412/MovieLens/u.item")
+      .toDF(movies_columns: _*)
+    movies.printSchema()
+    movies.show(false)
+       val occupations = sparkSession.read.format("csv").option("header", "false")
+      .option("sep", "\t")
+      .option("escape", "\t")
+      .csv("file:////home/ojuarezwork412/MovieLens/u.occupation")
+      .toDF(occupations_columns: _*)  
+  occupations.show(false)
+    val users = sparkSession.read.format("csv").option("header", "false")
+      .option("sep", "|")
+      .option("escape", "\t")
+      .csv("file:////home/ojuarezwork412/MovieLens/u.user")
+      .toDF(user_columns: _*)
+    users.show(false)
+ 
+   val genres = sparkSession.read.format("csv").option("header", "false")
+      .option("sep", "\t")
+      .option("escape", "\t")
+      .csv("file:////home/ojuarezwork412/MovieLens/u.genre")
+      .toDF(genres_columns: _*)
+    //print(df.columns)
+    genres.show(10)
+    print(genres.show(false))
+    val df10=ratings.select(col("user_id"),col("item_id"),col("rating"),col("timestamp"),
+                 (from_unixtime(col("timestamp"))).as("timestamp5")
+                 , (year(from_unixtime(col("timestamp"))).as("year"))
+                 , (month(from_unixtime(col("timestamp"))).as("month"))
+                   )
+   // ratings.select(col("user_id"),col("item_id"),col("rating"),col("timestamp"),
+    //(from_unixtime(col("timestamp"))).as("tim>
+      //df7.show()
+      //ratings.collect()
+      ratings.printSchema()
+    df10.show()
+    ratings.show(false)
+    //val df11= df10.select(year(timestamp5).alias("year"),month(df10.timestamp5).alias("month"))
+    //df11.show()
+   //val joinCondition = movies.col("movie_id") 
+   val df20 = df10.join(movies,df10("item_id") === movies("movie_id"),"left")
+    print(df20.head())
+     df20.show()
+    val df40 = df20.groupBy("item_id").agg(count("item_id").alias("counter")).sort(desc("counter")).show()
+   val df30 = df20.groupBy("item_id","year").count().sort().show()
+    val df3 = df20.groupBy("item_id","year","month").count().sort().show()
+    val unknownDF = df20.where(df20("unknown") ===1)
+    unknownDF.groupBy("movie_title","year","month").agg(count("movie_title").alias("counter")).sort(desc("counter")).show() 
+    val ActionDF = df20.where(df20("Action") ===1)
+    ActionDF.groupBy("movie_title","year","month").agg(count("movie_title").alias("counter")).sort(desc("counter")).show()
+   /* vsl Acti
+    val AdventureDF
+    val AnimationDF
+    val ChildrensDF
+    val ComedyDF
+    val CrimeDF
+    val DocumentaryDF
+    val DramaDF
+    val FantasyDF
+    val Film-NoirDF
+    val HorrorDF
+    val MusicalDF
+    val MysteryDF
+    val RomanceDF
+    val Sci-FiDF
+    val ThrillerDF
+    val WarDF
+    val WesternDF  */
+    //#print(df3)
+    print(ratings.columns)
+    sparkSession.stop()
+  }
+}

@@ -1,0 +1,11 @@
+[0m[[0m[0mdebug[0m] [0m[0mPackaging /home/ojuarezwork412/sbt_projects/spark-analytics/target/scala-2.11/spark-analytics_2.11-1.0.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	HelloWorld$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/ojuarezwork412/sbt_projects/spark-analytics/target/scala-2.11/classes/HelloWorld$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	HelloWorld.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/ojuarezwork412/sbt_projects/spark-analytics/target/scala-2.11/classes/HelloWorld.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SparkAnalytics$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/ojuarezwork412/sbt_projects/spark-analytics/target/scala-2.11/classes/SparkAnalytics$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	SparkAnalytics.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  /home/ojuarezwork412/sbt_projects/spark-analytics/target/scala-2.11/classes/SparkAnalytics.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m
